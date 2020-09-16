@@ -1,20 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export default function IssueList({ issues, labels }) {
-  const labelsById = {};
-
-  labels.forEach((label) => {
-    labelsById[label.id] = label;
-  });
-
+export default function IssueList({ issues, labels, labelsById }) {
   return (
     <ul className="list-group">
       {issues.map((issue) => {
-        // Less efficient way
-        // const label = labels.find((label) => {
-        //   return label.id === issue.label;
-        // });
-
         const label = labelsById[issue.label];
 
         return (
@@ -22,7 +12,7 @@ export default function IssueList({ issues, labels }) {
             key={issue.id}
             className="list-group-item d-flex justify-content-between"
           >
-            <div>{issue.title}</div>
+            <Link to={`/issues/${issue.id}`}>{issue.title}</Link>
             <div>
               <span
                 className="badge badge-pill text-white"

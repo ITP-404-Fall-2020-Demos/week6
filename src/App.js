@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./App.css";
-import IssueList from "./IssueList";
-import IssueForm from "./IssueForm";
+import Issues from "./Issues";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import CreateIssue from "./CreateIssue";
+import IssueDetails from "./IssueDetails";
 
 function App() {
   const labels = [
@@ -45,6 +47,30 @@ function App() {
     },
   ]);
 
+  function deleteIssue(issueToBeDeleted) {
+    const filteredIssues = issues.filter((issue) => {
+      return issue !== issueToBeDeleted;
+    });
+
+    setIssues(filteredIssues);
+  }
+
+  function editIssue(issueToBeEdited, newTitle, newLabelId) {
+    const updatedIssues = issues.map((issue) => {
+      if (issue === issueToBeEdited) {
+        return {
+          id: issue.id,
+          title: newTitle,
+          label: newLabelId,
+        };
+      } else {
+        return issue;
+      }
+    });
+
+    setIssues(updatedIssues);
+  }
+
   function createIssue(title, labelId) {
     const newIssue = {
       id: issues.length,
@@ -55,15 +81,34 @@ function App() {
     setIssues(issues.concat(newIssue));
   }
 
+  const labelsById = {};
+
+  labels.forEach((label) => {
+    labelsById[label.id] = label;
+  });
+
   return (
-    <div className="container mt-3">
-      <h1>Issues</h1>
-      <IssueList issues={issues} labels={labels} />
-      <div className="mt-3">
-        <h3>Create Issue</h3>
-        <IssueForm labels={labels} onSubmit={createIssue} />
+    <Router>
+      <div className="container mt-3">
+        <h1>Issues</h1>
+        <Switch>
+          <Route path="/" exact={true}>
+            <Issues issues={issues} labels={labels} labelsById={labelsById} />
+          </Route>
+          <Route path="/issues/:id" exact={true}>
+            <IssueDetails
+              issues={issues}
+              labels={labels}
+              deleteIssue={deleteIssue}
+              editIssue={editIssue}
+            />
+          </Route>
+          <Route path="/new" exact={true}>
+            <CreateIssue labels={labels} createIssue={createIssue} />
+          </Route>
+        </Switch>
       </div>
-    </div>
+    </Router>
   );
 }
 

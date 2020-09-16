@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 
-export default function IssueForm({ labels, onSubmit }) {
-  const [title, setTitle] = useState("");
-  const [labelId, setLabelId] = useState(2);
+export default function IssueForm({
+  labels,
+  onSubmit,
+  issue = { title: "", label: 2 },
+}) {
+  const [title, setTitle] = useState(issue.title);
+  const [labelId, setLabelId] = useState(issue.label);
 
   function handleSubmit(event) {
     event.preventDefault();
