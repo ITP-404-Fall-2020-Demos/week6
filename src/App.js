@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import PageNotFound from "./PageNotFound";
-import { fetchLabels, fetchIssues, destroyIssue } from "./api";
+import { fetchLabels, fetchIssues, destroyIssue, saveIssue } from "./api";
 
 function App() {
   const [labels, setLabels] = useState([]);
@@ -54,13 +54,12 @@ function App() {
   }
 
   function createIssue(title, labelId) {
-    const newIssue = {
-      id: issues.length,
-      title,
+    saveIssue({
+      title: title,
       label: labelId,
-    };
-
-    setIssues(issues.concat(newIssue));
+    }).then((newIssue) => {
+      setIssues(issues.concat(newIssue));
+    });
   }
 
   return (

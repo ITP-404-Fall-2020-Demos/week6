@@ -27,3 +27,15 @@ export function destroyIssue(id) {
     method: "delete",
   });
 }
+
+export function saveIssue(data) {
+  return fetch("/issues", {
+    method: "post",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    return response.json();
+  });
+}
