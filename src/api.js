@@ -21,3 +21,9 @@ export function fetchIssue(id) {
     return response.json();
   });
 }
+
+export function destroyIssue(id) {
+  return fetch(`/issues/${id}`, {
+    method: "delete",
+  });
+}

@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import PageNotFound from "./PageNotFound";
-import { fetchLabels, fetchIssues } from "./api";
+import { fetchLabels, fetchIssues, destroyIssue } from "./api";
 
 function App() {
   const [labels, setLabels] = useState([]);
@@ -28,11 +28,13 @@ function App() {
   }, []);
 
   function deleteIssue(issueToBeDeleted) {
-    const filteredIssues = issues.filter((issue) => {
-      return issue !== issueToBeDeleted;
-    });
+    destroyIssue(issueToBeDeleted.id).then(() => {
+      const filteredIssues = issues.filter((issue) => {
+        return issue.id !== issueToBeDeleted.id;
+      });
 
-    setIssues(filteredIssues);
+      setIssues(filteredIssues);
+    });
   }
 
   function editIssue(issueToBeEdited, newTitle, newLabelId) {
