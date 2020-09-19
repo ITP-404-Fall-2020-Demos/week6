@@ -4,6 +4,7 @@ import Issues from "./Issues";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
+import PageNotFound from "./PageNotFound";
 
 function App() {
   const labels = [
@@ -105,6 +106,9 @@ function App() {
           </Route>
           <Route path="/new" exact={true}>
             <CreateIssue labels={labels} createIssue={createIssue} />
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>
