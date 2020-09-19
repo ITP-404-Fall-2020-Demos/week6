@@ -25,6 +25,14 @@ export default function IssueDetails({
     history.push("/");
   }
 
+  if (!issue) {
+    return (
+      <div>
+        <p>The requested resource could not be found</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <IssueForm labels={labels} issue={issue} onSubmit={handleSubmit} />
