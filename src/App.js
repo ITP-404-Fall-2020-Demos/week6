@@ -71,7 +71,6 @@ function App() {
           </Route>
           <Route path="/issues/:id" exact={true}>
             <IssueDetails
-              issues={issues}
               labels={labels}
               deleteIssue={deleteIssue}
               editIssue={editIssue}

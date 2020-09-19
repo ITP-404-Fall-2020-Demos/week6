@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import IssueForm from "./IssueForm";
+import { fetchIssue } from "./api";
 
-export default function IssueDetails({
-  issues,
-  labels,
-  deleteIssue,
-  editIssue,
-}) {
+export default function IssueDetails({ labels, deleteIssue, editIssue }) {
   const { id } = useParams();
   const history = useHistory();
+  const [issue, setIssue] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState();
 
-  const issue = issues.find((issue) => {
-    return issue.id === Number(id);
-  });
+  useEffect(() => {
+    fetchIssue(id)
+      .then(
+        (issue) => {
+          setIssue(issue);
+        },
+        (error) => {
+          setError(error);
+        }
+      )
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [id]);
 
   function handleDeleteButtonClick() {
     deleteIssue(issue);
@@ -25,10 +35,14 @@ export default function IssueDetails({
     history.push("/");
   }
 
-  if (!issue) {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
     return (
       <div>
-        <p>The requested resource could not be found</p>
+        <p>Issue not found</p>
       </div>
     );
   }
