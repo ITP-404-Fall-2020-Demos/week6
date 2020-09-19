@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IssueList from "./IssueList";
 import { Link } from "react-router-dom";
 
 export default function Issues({ issues, labels, labelsById }) {
-  const [selectedLabelId, setSelectedLabelId] = useState();
+  const [selectedLabelId, setSelectedLabelId] = useState("-");
   const [filteredIssues, setFilteredIssues] = useState(issues);
+
+  useEffect(() => {
+    setFilteredIssues(issues);
+  }, [issues]);
 
   const options = [{ id: "-", name: "All" }].concat(labels);
 
