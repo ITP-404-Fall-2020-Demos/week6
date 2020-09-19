@@ -29,8 +29,12 @@ export function destroyIssue(id) {
 }
 
 export function saveIssue(data) {
-  return fetch("/issues", {
-    method: "post",
+  const isEditing = data.hasOwnProperty("id");
+  const url = isEditing ? `/issues/${data.id}` : "/issues";
+  const method = isEditing ? "put" : "post";
+
+  return fetch(url, {
+    method,
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",

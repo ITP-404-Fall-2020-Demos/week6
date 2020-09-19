@@ -38,19 +38,21 @@ function App() {
   }
 
   function editIssue(issueToBeEdited, newTitle, newLabelId) {
-    const updatedIssues = issues.map((issue) => {
-      if (issue === issueToBeEdited) {
-        return {
-          id: issue.id,
-          title: newTitle,
-          label: newLabelId,
-        };
-      } else {
-        return issue;
-      }
-    });
+    saveIssue({
+      ...issueToBeEdited,
+      title: newTitle,
+      label: newLabelId,
+    }).then((updatedIssue) => {
+      const updatedIssues = issues.map((issue) => {
+        if (issue.id === updatedIssue.id) {
+          return updatedIssue;
+        } else {
+          return issue;
+        }
+      });
 
-    setIssues(updatedIssues);
+      setIssues(updatedIssues);
+    });
   }
 
   function createIssue(title, labelId) {
