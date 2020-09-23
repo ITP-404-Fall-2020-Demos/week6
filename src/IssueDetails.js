@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import IssueForm from "./IssueForm";
+import { fetchIssue } from "./api";
 
 export default function IssueDetails({
   issues,
@@ -10,10 +11,24 @@ export default function IssueDetails({
 }) {
   const { id } = useParams();
   const history = useHistory();
+  const [issue, setIssue] = useState();
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const issue = issues.find((issue) => {
-    return issue.id === Number(id);
-  });
+  useEffect(() => {
+    fetchIssue(id)
+      .then(
+        (issue) => {
+          setIssue(issue);
+        },
+        (error) => {
+          setError(error);
+        }
+      )
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   function handleDeleteButtonClick() {
     deleteIssue(issue);
@@ -23,6 +38,18 @@ export default function IssueDetails({
   function handleSubmit(newTitle, newLableId) {
     editIssue(issue, newTitle, newLableId);
     history.push("/");
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        <p>{error}</p>
+      </div>
+    );
   }
 
   return (

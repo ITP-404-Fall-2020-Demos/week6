@@ -5,7 +5,7 @@ export default function IssueList({ issues, labels, labelsById }) {
   return (
     <ul className="list-group">
       {issues.map((issue) => {
-        const label = labelsById[issue.label];
+        const label = labelsById[issue.label] || {};
 
         return (
           <li

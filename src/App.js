@@ -1,51 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Issues from "./Issues";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
+import PageNotFound from "./PageNotFound";
+import { fetchLabels, fetchIssues } from "./api";
 
 function App() {
-  const labels = [
-    {
-      id: 0,
-      name: "bug",
-      color: "red",
-    },
-    {
-      id: 1,
-      name: "documentation",
-      color: "blue",
-    },
-    {
-      id: 2,
-      name: "question",
-      color: "pink",
-    },
-  ];
+  const [labels, setLabels] = useState([]);
+  const [labelsById, setLabelsById] = useState({});
+  const [issues, setIssues] = useState([]);
 
-  const [issues, setIssues] = useState([
-    {
-      id: 0,
-      title: "Issue 0",
-      label: 1,
-    },
-    {
-      id: 1,
-      title: "Issue 1",
-      label: 2,
-    },
-    {
-      id: 2,
-      title: "Issue 2",
-      label: 0,
-    },
-    {
-      id: 3,
-      title: "Issue 3",
-      label: 2,
-    },
-  ]);
+  useEffect(() => {
+    Promise.all([fetchLabels(), fetchIssues()]).then(([labels, issues]) => {
+      setIssues(issues);
+      setLabels(labels);
+
+      const labelsById = {};
+
+      labels.forEach((label) => {
+        labelsById[label.id] = label;
+      });
+
+      setLabelsById(labelsById);
+    });
+  }, []);
 
   function deleteIssue(issueToBeDeleted) {
     const filteredIssues = issues.filter((issue) => {
@@ -81,12 +61,6 @@ function App() {
     setIssues(issues.concat(newIssue));
   }
 
-  const labelsById = {};
-
-  labels.forEach((label) => {
-    labelsById[label.id] = label;
-  });
-
   return (
     <Router>
       <div className="container mt-3">
@@ -105,6 +79,9 @@ function App() {
           </Route>
           <Route path="/new" exact={true}>
             <CreateIssue labels={labels} createIssue={createIssue} />
+          </Route>
+          <Route path="*">
+            <PageNotFound />
           </Route>
         </Switch>
       </div>
