@@ -1,17 +1,17 @@
 export function fetchLabels() {
-  return fetch("/labels").then((response) => {
+  return fetch("/api/labels").then((response) => {
     return response.json();
   });
 }
 
 export function fetchIssues() {
-  return fetch("/issues").then((response) => {
+  return fetch("/api/issues").then((response) => {
     return response.json();
   });
 }
 
 export function fetchIssue(id) {
-  return fetch(`/issues/${id}`).then((response) => {
+  return fetch(`/api/issues/${id}`).then((response) => {
     if (response.status >= 400) {
       return Promise.reject(
         `There was an error requesting the issue with an id of ${id}`
@@ -23,14 +23,14 @@ export function fetchIssue(id) {
 }
 
 export function destroyIssue(id) {
-  return fetch(`/issues/${id}`, {
+  return fetch(`/api/issues/${id}`, {
     method: "delete",
   });
 }
 
 export function saveIssue(data) {
   const isEditing = data.hasOwnProperty("id");
-  const url = isEditing ? `/issues/${data.id}` : "/issues";
+  const url = isEditing ? `/api/issues/${data.id}` : "/api/issues";
   const method = isEditing ? "put" : "post";
 
   return fetch(url, {
