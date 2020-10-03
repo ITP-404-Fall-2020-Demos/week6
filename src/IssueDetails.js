@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import IssueForm from "./IssueForm";
 import { fetchIssue } from "./api";
+import ConfirmDeleteIssueModal from "./ConfirmDeleteIssueModal";
 
 export default function IssueDetails({ labels, deleteIssue, editIssue }) {
   const { id } = useParams();
@@ -9,6 +10,7 @@ export default function IssueDetails({ labels, deleteIssue, editIssue }) {
   const [issue, setIssue] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
+  const [isConfirmationShown, setIsConfirmationShown] = useState(false);
 
   useEffect(() => {
     fetchIssue(id)
@@ -25,7 +27,15 @@ export default function IssueDetails({ labels, deleteIssue, editIssue }) {
       });
   }, [id]);
 
-  function handleDeleteButtonClick() {
+  function showDeleteConfirmationModal() {
+    setIsConfirmationShown(true);
+  }
+
+  function hideDeleteConfirmationModal() {
+    setIsConfirmationShown(false);
+  }
+
+  function confirmDeletion() {
     deleteIssue(issue);
     history.push("/");
   }
@@ -52,11 +62,18 @@ export default function IssueDetails({ labels, deleteIssue, editIssue }) {
       <IssueForm labels={labels} issue={issue} onSubmit={handleSubmit} />
       <br />
 
+      {isConfirmationShown && (
+        <ConfirmDeleteIssueModal
+          onClose={hideDeleteConfirmationModal}
+          onConfirm={confirmDeletion}
+        />
+      )}
+
       <div className="text-right">
         <button
           type="button"
           className="btn btn-danger"
-          onClick={handleDeleteButtonClick}
+          onClick={showDeleteConfirmationModal}
         >
           Delete
         </button>
