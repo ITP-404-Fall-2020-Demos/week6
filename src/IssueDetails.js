@@ -28,7 +28,7 @@ export default function IssueDetails({
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [id]);
 
   function handleDeleteButtonClick() {
     deleteIssue(issue);
