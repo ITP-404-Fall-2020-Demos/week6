@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import IssueForm from "./IssueForm";
 import { fetchIssue } from "./api";
+import ConfirmDeleteIssueModal from "./ConfirmDeleteIssueModal";
 
 export default function IssueDetails({
   issues,
@@ -14,6 +15,7 @@ export default function IssueDetails({
   const [issue, setIssue] = useState();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfirmationShown, setIsConfirmationShown] = useState(false);
 
   useEffect(() => {
     fetchIssue(id)
@@ -30,7 +32,7 @@ export default function IssueDetails({
       });
   }, [id]);
 
-  function handleDeleteButtonClick() {
+  function confirmDeletion() {
     deleteIssue(issue);
     history.push("/");
   }
@@ -38,6 +40,14 @@ export default function IssueDetails({
   function handleSubmit(newTitle, newLableId) {
     editIssue(issue, newTitle, newLableId);
     history.push("/");
+  }
+
+  function showDeleteConfirmation() {
+    setIsConfirmationShown(true);
+  }
+
+  function hideDeleteConfirmation() {
+    setIsConfirmationShown(false);
   }
 
   if (isLoading) {
@@ -54,6 +64,12 @@ export default function IssueDetails({
 
   return (
     <div>
+      {isConfirmationShown && (
+        <ConfirmDeleteIssueModal
+          onClose={hideDeleteConfirmation}
+          onConfirm={confirmDeletion}
+        />
+      )}
       <IssueForm labels={labels} issue={issue} onSubmit={handleSubmit} />
       <br />
 
@@ -61,7 +77,7 @@ export default function IssueDetails({
         <button
           type="button"
           className="btn btn-danger"
-          onClick={handleDeleteButtonClick}
+          onClick={showDeleteConfirmation}
         >
           Delete
         </button>
