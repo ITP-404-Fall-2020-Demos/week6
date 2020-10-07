@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import PageNotFound from "./PageNotFound";
-import { fetchLabels, fetchIssues } from "./api";
+import { fetchLabels, fetchIssues, destroyIssue, saveIssue } from "./api";
 
 function App() {
   const [labels, setLabels] = useState([]);
@@ -28,37 +28,45 @@ function App() {
   }, []);
 
   function deleteIssue(issueToBeDeleted) {
-    const filteredIssues = issues.filter((issue) => {
-      return issue !== issueToBeDeleted;
-    });
+    destroyIssue(issueToBeDeleted.id).then(() => {
+      const filteredIssues = issues.filter((issue) => {
+        return issue.id !== issueToBeDeleted.id;
+      });
 
-    setIssues(filteredIssues);
+      setIssues(filteredIssues);
+    });
   }
 
   function editIssue(issueToBeEdited, newTitle, newLabelId) {
-    const updatedIssues = issues.map((issue) => {
-      if (issue === issueToBeEdited) {
-        return {
-          id: issue.id,
-          title: newTitle,
-          label: newLabelId,
-        };
-      } else {
-        return issue;
-      }
-    });
+    saveIssue({
+      id: issueToBeEdited.id,
+      title: newTitle,
+      label: newLabelId,
+    }).then(() => {
+      const updatedIssues = issues.map((issue) => {
+        if (issue.id === issueToBeEdited.id) {
+          return {
+            id: issue.id,
+            title: newTitle,
+            label: newLabelId,
+          };
+        } else {
+          return issue;
+        }
+      });
 
-    setIssues(updatedIssues);
+      setIssues(updatedIssues);
+    });
   }
 
   function createIssue(title, labelId) {
-    const newIssue = {
-      id: issues.length,
+    saveIssue({
       title,
       label: labelId,
-    };
-
-    setIssues(issues.concat(newIssue));
+    }).then((newIssue) => {
+      console.log(newIssue);
+      setIssues(issues.concat(newIssue));
+    });
   }
 
   return (
