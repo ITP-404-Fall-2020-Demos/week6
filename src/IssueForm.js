@@ -36,6 +36,7 @@ export default function IssueForm({
           onChange={handleTitleChange}
           className="form-control"
           id="title"
+          data-testid="title"
         />
       </div>
       <div className="form-group">
@@ -43,6 +44,7 @@ export default function IssueForm({
         <select
           className="form-control"
           id="label"
+          data-testid="label"
           value={labelId}
           onChange={handleLabelChange}
         >
@@ -55,7 +57,11 @@ export default function IssueForm({
           })}
         </select>
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button
+        type="submit"
+        className="btn btn-primary"
+        data-testid="save-button"
+      >
         Save
       </button>
     </form>
