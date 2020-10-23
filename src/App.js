@@ -71,29 +71,27 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="container mt-3">
-        <h1>Issues</h1>
-        <Switch>
-          <Route path="/" exact={true}>
-            <Issues issues={issues} labels={labels} labelsById={labelsById} />
-          </Route>
-          <Route path="/issues/:id" exact={true}>
-            <LabelsContext.Provider value={labels}>
+    <LabelsContext.Provider value={labels}>
+      <Router>
+        <div className="container mt-3">
+          <h1>Issues</h1>
+          <Switch>
+            <Route path="/" exact={true}>
+              <Issues issues={issues} labels={labels} labelsById={labelsById} />
+            </Route>
+            <Route path="/issues/:id" exact={true}>
               <IssueDetails deleteIssue={deleteIssue} editIssue={editIssue} />
-            </LabelsContext.Provider>
-          </Route>
-          <Route path="/new" exact={true}>
-            <LabelsContext.Provider value={labels}>
+            </Route>
+            <Route path="/new" exact={true}>
               <CreateIssue createIssue={createIssue} />
-            </LabelsContext.Provider>
-          </Route>
-          <Route path="*">
-            <PageNotFound />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+            </Route>
+            <Route path="*">
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </LabelsContext.Provider>
   );
 }
 
