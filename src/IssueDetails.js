@@ -4,12 +4,7 @@ import IssueForm from "./IssueForm";
 import { fetchIssue } from "./api";
 import ConfirmDeleteIssueModal from "./ConfirmDeleteIssueModal";
 
-export default function IssueDetails({
-  issues,
-  labels,
-  deleteIssue,
-  editIssue,
-}) {
+export default function IssueDetails({ deleteIssue, editIssue }) {
   const { id } = useParams();
   const history = useHistory();
   const [issue, setIssue] = useState();
@@ -70,7 +65,7 @@ export default function IssueDetails({
           onConfirm={confirmDeletion}
         />
       )}
-      <IssueForm labels={labels} issue={issue} onSubmit={handleSubmit} />
+      <IssueForm issue={issue} onSubmit={handleSubmit} />
       <br />
 
       <div className="text-right">

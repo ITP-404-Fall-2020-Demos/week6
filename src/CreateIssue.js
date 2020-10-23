@@ -2,7 +2,7 @@ import React from "react";
 import IssueForm from "./IssueForm";
 import { useHistory } from "react-router-dom";
 
-export default function CreateIssue({ labels, createIssue }) {
+export default function CreateIssue({ createIssue }) {
   const history = useHistory();
 
   function handleSubmit(title, labelId) {
@@ -13,7 +13,7 @@ export default function CreateIssue({ labels, createIssue }) {
   return (
     <div className="mt-3">
       <h3>Create Issue</h3>
-      <IssueForm labels={labels} onSubmit={handleSubmit} />
+      <IssueForm onSubmit={handleSubmit} />
     </div>
   );
 }

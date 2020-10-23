@@ -6,6 +6,7 @@ import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import PageNotFound from "./PageNotFound";
 import { fetchLabels, fetchIssues, destroyIssue, saveIssue } from "./api";
+import { LabelsContext } from "./contexts";
 
 function App() {
   const [labels, setLabels] = useState([]);
@@ -78,15 +79,14 @@ function App() {
             <Issues issues={issues} labels={labels} labelsById={labelsById} />
           </Route>
           <Route path="/issues/:id" exact={true}>
-            <IssueDetails
-              issues={issues}
-              labels={labels}
-              deleteIssue={deleteIssue}
-              editIssue={editIssue}
-            />
+            <LabelsContext.Provider value={labels}>
+              <IssueDetails deleteIssue={deleteIssue} editIssue={editIssue} />
+            </LabelsContext.Provider>
           </Route>
           <Route path="/new" exact={true}>
-            <CreateIssue labels={labels} createIssue={createIssue} />
+            <LabelsContext.Provider value={labels}>
+              <CreateIssue createIssue={createIssue} />
+            </LabelsContext.Provider>
           </Route>
           <Route path="*">
             <PageNotFound />
