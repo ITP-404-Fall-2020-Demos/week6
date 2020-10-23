@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { LabelsContext } from "./contexts";
+import { DataStoreContext } from "./contexts";
 
 export default function IssueForm({
   onSubmit,
@@ -7,7 +7,7 @@ export default function IssueForm({
 }) {
   const [title, setTitle] = useState(issue.title);
   const [labelId, setLabelId] = useState(issue.label);
-  const labels = useContext(LabelsContext);
+  const { labels } = useContext(DataStoreContext);
 
   function handleSubmit(event) {
     event.preventDefault();

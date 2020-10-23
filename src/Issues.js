@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import IssueList from "./IssueList";
 import { Link } from "react-router-dom";
+import { DataStoreContext } from "./contexts";
 
-export default function Issues({ issues, labels, labelsById }) {
+export default function Issues() {
+  const { issues, labels } = useContext(DataStoreContext);
   const [selectedLabelId, setSelectedLabelId] = useState();
   const [filteredIssues, setFilteredIssues] = useState(issues);
 
@@ -54,11 +56,7 @@ export default function Issues({ issues, labels, labelsById }) {
         </select>
       </div>
 
-      <IssueList
-        issues={filteredIssues}
-        labels={labels}
-        labelsById={labelsById}
-      />
+      <IssueList issues={filteredIssues} />
     </>
   );
 }

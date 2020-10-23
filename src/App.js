@@ -6,7 +6,7 @@ import CreateIssue from "./CreateIssue";
 import IssueDetails from "./IssueDetails";
 import PageNotFound from "./PageNotFound";
 import { fetchLabels, fetchIssues, destroyIssue, saveIssue } from "./api";
-import { LabelsContext } from "./contexts";
+import { DataStoreContext } from "./contexts";
 
 function App() {
   const [labels, setLabels] = useState([]);
@@ -71,13 +71,13 @@ function App() {
   }
 
   return (
-    <LabelsContext.Provider value={labels}>
+    <DataStoreContext.Provider value={{ labels, labelsById, issues }}>
       <Router>
         <div className="container mt-3">
           <h1>Issues</h1>
           <Switch>
             <Route path="/" exact={true}>
-              <Issues issues={issues} labels={labels} labelsById={labelsById} />
+              <Issues />
             </Route>
             <Route path="/issues/:id" exact={true}>
               <IssueDetails deleteIssue={deleteIssue} editIssue={editIssue} />
@@ -91,7 +91,7 @@ function App() {
           </Switch>
         </div>
       </Router>
-    </LabelsContext.Provider>
+    </DataStoreContext.Provider>
   );
 }
 
