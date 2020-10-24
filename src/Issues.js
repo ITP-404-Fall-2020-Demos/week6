@@ -1,35 +1,30 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import IssueList from "./IssueList";
 import { Link } from "react-router-dom";
 import { DataStoreContext } from "./contexts";
 
 export default function Issues() {
   const { issues, labels } = useContext(DataStoreContext);
-  const [selectedLabelId, setSelectedLabelId] = useState();
-  const [filteredIssues, setFilteredIssues] = useState(issues);
-
-  useEffect(() => {
-    setFilteredIssues(issues);
-  }, [issues]);
+  const [selectedLabelId, setSelectedLabelId] = useState("-");
 
   const options = [{ id: "-", name: "All" }].concat(labels);
 
   function handleLabelChange(event) {
-    const isAllSelected = event.target.value === "-";
+    const { value } = event.target;
+    const selectedLabelId = value === "-" ? value : Number(value);
+    setSelectedLabelId(selectedLabelId);
+  }
 
-    if (isAllSelected) {
-      setFilteredIssues(issues);
-      setSelectedLabelId("-");
-    } else {
-      const selectedLabelId = Number(event.target.value);
+  let filteredIssues;
 
-      const filteredIssues = issues.filter((issue) => {
-        return issue.label === selectedLabelId;
-      });
+  const isAllSelected = selectedLabelId === "-";
 
-      setFilteredIssues(filteredIssues);
-      setSelectedLabelId(selectedLabelId);
-    }
+  if (isAllSelected) {
+    filteredIssues = issues;
+  } else {
+    filteredIssues = issues.filter((issue) => {
+      return issue.label === selectedLabelId;
+    });
   }
 
   return (
