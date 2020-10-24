@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import IssueList from "./IssueList";
 import { Link } from "react-router-dom";
 import { DataStoreContext } from "./contexts";
@@ -6,6 +6,7 @@ import { DataStoreContext } from "./contexts";
 export default function Issues() {
   const { issues, labels } = useContext(DataStoreContext);
   const [selectedLabelId, setSelectedLabelId] = useState("-");
+  const [count, setCount] = useState(0);
 
   const options = [{ id: "-", name: "All" }].concat(labels);
 
@@ -15,20 +16,23 @@ export default function Issues() {
     setSelectedLabelId(selectedLabelId);
   }
 
-  let filteredIssues;
+  const filteredIssues = useMemo(() => {
+    console.log("filtered");
+    const isAllSelected = selectedLabelId === "-";
 
-  const isAllSelected = selectedLabelId === "-";
-
-  if (isAllSelected) {
-    filteredIssues = issues;
-  } else {
-    filteredIssues = issues.filter((issue) => {
-      return issue.label === selectedLabelId;
-    });
-  }
+    if (isAllSelected) {
+      return issues;
+    } else {
+      return issues.filter((issue) => {
+        return issue.label === selectedLabelId;
+      });
+    }
+  }, [selectedLabelId, issues]);
 
   return (
     <>
+      {count}
+      <button onClick={() => setCount(count + 1)}>Click me</button>
       <div className="text-right mb-3">
         <Link to="/new" className="btn btn-primary">
           Create Issue
