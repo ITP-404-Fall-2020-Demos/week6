@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export function fetchLabels() {
   return fetch("/api/labels").then((response) => {
     return response.json();
@@ -25,6 +27,9 @@ export function fetchIssue(id) {
 export function destroyIssue(id) {
   return fetch(`/api/issues/${id}`, {
     method: "DELETE",
+    headers: {
+      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+    },
   });
 }
 
@@ -38,6 +43,7 @@ export function saveIssue(data) {
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
+      "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
     },
   }).then((response) => {
     return response.json();
