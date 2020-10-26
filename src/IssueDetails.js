@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import IssueForm from "./IssueForm";
 import { fetchIssue } from "./api";
 import ConfirmDeleteIssueModal from "./ConfirmDeleteIssueModal";
+import { DataStoreContext } from "./contexts";
 
 export default function IssueDetails({ deleteIssue, editIssue }) {
   const { id } = useParams();
@@ -11,6 +12,7 @@ export default function IssueDetails({ deleteIssue, editIssue }) {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmationShown, setIsConfirmationShown] = useState(false);
+  const { user } = useContext(DataStoreContext);
 
   useEffect(() => {
     fetchIssue(id)
@@ -68,15 +70,17 @@ export default function IssueDetails({ deleteIssue, editIssue }) {
       <IssueForm issue={issue} onSubmit={handleSubmit} />
       <br />
 
-      <div className="text-right">
-        <button
-          type="button"
-          className="btn btn-danger"
-          onClick={showDeleteConfirmation}
-        >
-          Delete
-        </button>
-      </div>
+      {user && (
+        <div className="text-right">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={showDeleteConfirmation}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }

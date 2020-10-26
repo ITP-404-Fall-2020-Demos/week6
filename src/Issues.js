@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { DataStoreContext } from "./contexts";
 
 export default function Issues() {
-  const { issues, labels } = useContext(DataStoreContext);
+  const { issues, labels, user } = useContext(DataStoreContext);
   const [selectedLabelId, setSelectedLabelId] = useState("-");
 
   const options = [{ id: "-", name: "All" }].concat(labels);
@@ -29,11 +29,13 @@ export default function Issues() {
 
   return (
     <>
-      <div className="text-right mb-3">
-        <Link to="/new" className="btn btn-primary">
-          Create Issue
-        </Link>
-      </div>
+      {user && (
+        <div className="text-right mb-3">
+          <Link to="/new" className="btn btn-primary">
+            Create Issue
+          </Link>
+        </div>
+      )}
 
       <div className="d-flex justify-content-end mb-3">
         <select

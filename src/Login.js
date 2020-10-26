@@ -4,8 +4,8 @@ import { login } from "./auth";
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState("dtang@usc.edu");
-  const [password, setPassword] = useState("password");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { setUser } = useContext(DataStoreContext);
   const history = useHistory();
 
