@@ -6,7 +6,6 @@ import { DataStoreContext } from "./contexts";
 export default function Issues() {
   const { issues, labels } = useContext(DataStoreContext);
   const [selectedLabelId, setSelectedLabelId] = useState("-");
-  const [count, setCount] = useState(0);
 
   const options = [{ id: "-", name: "All" }].concat(labels);
 
@@ -17,7 +16,6 @@ export default function Issues() {
   }
 
   const filteredIssues = useMemo(() => {
-    console.log("filtered");
     const isAllSelected = selectedLabelId === "-";
 
     if (isAllSelected) {
@@ -31,8 +29,6 @@ export default function Issues() {
 
   return (
     <>
-      {count}
-      <button onClick={() => setCount(count + 1)}>Click me</button>
       <div className="text-right mb-3">
         <Link to="/new" className="btn btn-primary">
           Create Issue

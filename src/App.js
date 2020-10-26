@@ -8,11 +8,16 @@ import PageNotFound from "./PageNotFound";
 import { fetchLabels, fetchIssues, destroyIssue, saveIssue } from "./api";
 import { DataStoreContext } from "./contexts";
 import { issuesReducer } from "./reducers";
+import Navigation from "./Navigation";
+import SignUp from "./SignUp";
+import Login from "./Login";
+import { fetchUser } from "./auth";
 
 function App() {
   const [labels, setLabels] = useState([]);
   const [labelsById, setLabelsById] = useState({});
   const [issues, dispatch] = useReducer(issuesReducer, []);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     Promise.all([fetchLabels(), fetchIssues()]).then(([labels, issues]) => {
@@ -30,6 +35,12 @@ function App() {
       });
 
       setLabelsById(labelsById);
+    });
+  }, []);
+
+  useEffect(() => {
+    fetchUser().then((user) => {
+      setUser(user);
     });
   }, []);
 
@@ -74,10 +85,13 @@ function App() {
   }
 
   return (
-    <DataStoreContext.Provider value={{ labels, labelsById, issues }}>
+    <DataStoreContext.Provider
+      value={{ labels, labelsById, issues, user, setUser }}
+    >
       <Router>
         <div className="container mt-3">
           <h1>Issues</h1>
+          <Navigation />
           <Switch>
             <Route path="/" exact={true}>
               <Issues />
@@ -87,6 +101,12 @@ function App() {
             </Route>
             <Route path="/new" exact={true}>
               <CreateIssue createIssue={createIssue} />
+            </Route>
+            <Route path="/signup" exact={true}>
+              <SignUp />
+            </Route>
+            <Route path="/login" exact={true}>
+              <Login />
             </Route>
             <Route path="*">
               <PageNotFound />
