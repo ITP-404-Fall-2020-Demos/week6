@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { DataStoreContext } from "./contexts";
 
-export default function IssueList({ issues, labels, labelsById }) {
+export default function IssueList({ issues }) {
+  const { labelsById } = useContext(DataStoreContext);
+
   return (
     <ul className="list-group">
       {issues.map((issue) => {

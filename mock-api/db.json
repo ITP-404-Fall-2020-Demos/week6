@@ -2,13 +2,8 @@
   "issues": [
     {
       "id": 0,
-      "title": "Issue 0",
+      "title": "Issue 0!",
       "label": 1
-    },
-    {
-      "id": 1,
-      "title": "Issue 1",
-      "label": 2
     },
     {
       "id": 2,
@@ -19,6 +14,11 @@
       "id": 3,
       "title": "Issue 3",
       "label": 2
+    },
+    {
+      "title": "Issue 1",
+      "label": 2,
+      "id": 4
     }
   ],
   "labels": [
