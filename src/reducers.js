@@ -1,5 +1,4 @@
 export function issuesReducer(issues, action) {
-  console.log(issues, action);
   if (action.type === "ISSUES_LOADED") {
     return action.payload;
   }

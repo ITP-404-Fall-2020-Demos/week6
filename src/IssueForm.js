@@ -7,7 +7,7 @@ export default function IssueForm({
 }) {
   const [title, setTitle] = useState(issue.title);
   const [labelId, setLabelId] = useState(issue.label);
-  const { labels } = useContext(DataStoreContext);
+  const { user, labels } = useContext(DataStoreContext);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -37,6 +37,7 @@ export default function IssueForm({
           onChange={handleTitleChange}
           className="form-control"
           id="title"
+          readOnly={!user}
         />
       </div>
       <div className="form-group">
@@ -46,6 +47,7 @@ export default function IssueForm({
           id="label"
           value={labelId}
           onChange={handleLabelChange}
+          disabled={!user}
         >
           {labels.map((label) => {
             return (
@@ -56,7 +58,7 @@ export default function IssueForm({
           })}
         </select>
       </div>
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary" disabled={!user}>
         Save
       </button>
     </form>
